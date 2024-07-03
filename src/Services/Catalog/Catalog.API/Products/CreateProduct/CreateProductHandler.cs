@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Products.CreateProduct;
+namespace Catalog.API.Products.CreateProduct;
 
 public record CreateProductCommand(
     string Name,
@@ -10,7 +10,7 @@ public record CreateProductCommand(
 
 public record CreateProductResult(Guid Id);
 
-public class CreateProductCommandHandler(IDocumentSession session)
+internal class CreateProductCommandHandler(IDocumentSession session)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(

@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Products.CreateProduct;
+namespace Catalog.API.Products.CreateProduct;
 
 public record CreateProductRequest(
     string Name,
@@ -30,7 +30,7 @@ public class CreateProductEndpoint : ICarterModule
             .WithName("CreateProduct")
             .Produces<CreateProductResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithSummary("Create product")
-            .WithDescription("Create product");
+            .WithSummary("Create Product")
+            .WithDescription("Create Product");
     }
 }
