@@ -4,8 +4,8 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
-    config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
-    config.AddOpenBehavior(typeof(LoggingBehaviour<,>));
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
@@ -26,8 +26,8 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.Services
-    .AddHealthChecks()
+builder
+    .Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
@@ -36,9 +36,9 @@ app.MapCarter();
 
 app.UseExceptionHandler(_ => { });
 
-app.UseHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.UseHealthChecks(
+    "/health",
+    new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse }
+);
 
 app.Run();
