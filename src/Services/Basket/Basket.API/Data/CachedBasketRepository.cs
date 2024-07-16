@@ -1,8 +1,12 @@
 namespace Basket.API.Data
 {
-    public class CachedBasketRepository(IBasketRepository repo, IDistributedCache cache) : IBasketRepository
+    public class CachedBasketRepository(IBasketRepository repo, IDistributedCache cache)
+        : IBasketRepository
     {
-        public async Task<ShoppingCart> GetBasket(string userName, CancellationToken cancellationToken = default)
+        public async Task<ShoppingCart> GetBasket(
+            string userName,
+            CancellationToken cancellationToken = default
+        )
         {
             var cachedBasket = await cache.GetStringAsync(userName, cancellationToken);
 
@@ -13,24 +17,40 @@ namespace Basket.API.Data
                 if (result is not null)
                     return result;
 
-                throw new InternalServerException("Cached basket is missing or deserilized failure");
+                throw new InternalServerException(
+                    "Cached basket is missing or deserialized failure"
+                );
             }
 
             var basket = await repo.GetBasket(userName, cancellationToken);
-            await cache.SetStringAsync(userName, JsonSerializer.Serialize(basket), cancellationToken);
+            await cache.SetStringAsync(
+                userName,
+                JsonSerializer.Serialize(basket),
+                cancellationToken
+            );
             return basket;
         }
 
-        public async Task DeleteBasket(string userName, CancellationToken cancellationToken = default)
+        public async Task DeleteBasket(
+            string userName,
+            CancellationToken cancellationToken = default
+        )
         {
             await repo.DeleteBasket(userName, cancellationToken);
             await cache.RemoveAsync(userName, cancellationToken);
         }
 
-        public async Task<ShoppingCart> StoreBasket(ShoppingCart basket, CancellationToken cancellationToken = default)
+        public async Task<ShoppingCart> StoreBasket(
+            ShoppingCart basket,
+            CancellationToken cancellationToken = default
+        )
         {
             await repo.StoreBasket(basket, cancellationToken);
-            await cache.SetStringAsync(basket.Username, JsonSerializer.Serialize(basket), cancellationToken);
+            await cache.SetStringAsync(
+                basket.Username,
+                JsonSerializer.Serialize(basket),
+                cancellationToken
+            );
             return basket;
         }
     }

@@ -15,12 +15,10 @@ public class DeleteBasketEndpoint : ICarterModule
                     return Results.NoContent();
                 }
             )
-           .WithName("DeleteProduct")
+            .WithName("DeleteProduct")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Delete Product")
             .WithDescription("Delete Product");
     }
 }
-
-

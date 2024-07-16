@@ -1,3 +1,4 @@
+using BuildingBlocks.Messaging.MassTransit;
 using Discount.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,10 +23,7 @@ builder
     })
     .UseLightweightSessions();
 
-//if (builder.Environment.IsDevelopment())
-//{
-//    builder.Services.InitializeMartenWith<CatalogInitialData>();
-//}
+builder.Services.AddMessageBroker(builder.Configuration);
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
