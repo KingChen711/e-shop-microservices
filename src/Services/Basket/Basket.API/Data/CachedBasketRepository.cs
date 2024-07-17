@@ -16,10 +16,6 @@ namespace Basket.API.Data
 
                 if (result is not null)
                     return result;
-
-                throw new InternalServerException(
-                    "Cached basket is missing or deserialized failure"
-                );
             }
 
             var basket = await repo.GetBasket(userName, cancellationToken);
